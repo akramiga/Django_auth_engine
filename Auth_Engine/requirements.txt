@@ -1,0 +1,9 @@
+django
+djangorestframework
+djangorestframework-simplejwt
+python-decouple
+social-auth-app-django
+drf-spectacular
+celery
+redis 
+psycopg
