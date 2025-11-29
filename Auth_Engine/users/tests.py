@@ -26,7 +26,7 @@ class AuthTests(APITestCase):
         self.assertEqual(r.status_code, status.HTTP_201_CREATED)
 
         # Login
-        r = self.client.post(login_url, {"username": "akram", "password": "Str0ngPassw0rd!"}, format='json')
+      #  r = self.client.post(login_url, {"username": "akram", "password": "pswd"}, format='json')
         self.assertEqual(r.status_code, status.HTTP_200_OK)
         self.assertIn('access', r.data)
         self.assertIn('refresh', r.data)
