@@ -1,9 +1,11 @@
-django
-djangorestframework
-djangorestframework-simplejwt
+Django>=4.2,<5.3
+djangorestframework>=3.14
+djangorestframework-simplejwt>=5.2
+drf-spectacular>=0.28.0
+python-dotenv>=1.0.0
+social-auth-app-django>=5.0
+psycopg2-binary>=2.9  # remove if using sqlite
+pytest-django>=4.0  # optional for pytest tests
 python-decouple
-social-auth-app-django
-drf-spectacular
 celery
-redis 
-psycopg
+redis
