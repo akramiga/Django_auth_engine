@@ -4,7 +4,11 @@ from django.contrib.auth.password_validation import validate_password
 
 User = get_user_model()
 
+    
+    
+    
 class RegisterSerializer(serializers.ModelSerializer):
+    email = serializers.EmailField(required=True)
     password = serializers.CharField(write_only=True, required=True)
     password2 = serializers.CharField(write_only=True, required=True)
 
@@ -12,6 +16,11 @@ class RegisterSerializer(serializers.ModelSerializer):
         model = User
         fields = ("id", "username", "email", "password", "password2",)
         extra_kwargs = {"email": {"required": True}}
+        
+    def validate_email(self, value):
+        if User.objects.filter(email=value).exists():
+            raise serializers.ValidationError("Email already registered.")
+        return value.lower()
 
     def validate(self, data):
         if data['password'] != data['password2']:

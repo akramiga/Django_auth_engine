@@ -25,18 +25,11 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-nr)j#u7a35628fr$cs+4m(t3h2#eegg)b+(hhn5dc4ua%s-)i2'
+SECRET_KEY = os.getenv('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
-
-
-'''
-                    DONT FORGET TO ADD HOST
-                    HOOST !!!!!
-
-'''              
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["127.0.0.1", "localhost"]
 
 
 # Application definition
@@ -51,6 +44,7 @@ INSTALLED_APPS = [
     'users',
     'rest_framework',
     'rest_framework_simplejwt',
+    'rest_framework_simplejwt.token_blacklist',
     'social_django',
     'drf_spectacular',
 ]
@@ -127,25 +121,27 @@ REST_FRAMEWORK = {
     
     'DEFAULT_AUTHENTICATION_CLASSES': [
         
-        'rest_framework_simplejwt.authentication.JWTAuthentication',  # If using JWT
-        'rest_framework.authentication.SessionAuthentication', # Add if using Browsable API
+        'rest_framework_simplejwt.authentication.JWTAuthentication',  # for jwt
+        'rest_framework.authentication.SessionAuthentication', # for browsable api
     ],
-    "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
+    'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
 }
 
 
 SIMPLE_JWT = {
-    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=15),
+    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=30),
     'REFRESH_TOKEN_LIFETIME': timedelta(days=3),
-    "ROTATE_REFRESH_TOKENS": False,
-    "BLACKLIST_AFTER_ROTATION": True,
-    "AUTH_HEADER_TYPES": ("Bearer",),
+    'ROTATE_REFRESH_TOKENS': False,
+    'BLACKLIST_AFTER_ROTATION': True,
+    'AUTH_HEADER_TYPES': ('Bearer',),
+    'AUTH_TOKEN_CLASSES': ('rest_framework_simplejwt.tokens.AccessToken',),
 }
 
 SPECTACULAR_SETTINGS = {
-    "TITLE": "Auth API",
-    "DESCRIPTION": "Django REST API for authentication (JWT + social auth)",
-    "VERSION": "1.0.0",
+    'TITLE': 'Auth API',
+    'DESCRIPTION': 'Django REST API for authentication (JWT + social auth)',
+    'VERSION': '1.0.0',
+    'COMPONENT_SPLIT_REQUEST': True,
 }
 
 SOCIAL_AUTH_JSONFIELD_ENABLED = True
@@ -154,8 +150,6 @@ SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = os.getenv('SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET',
 
 LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = '/'
-
-
 # Internationalization
 # https://docs.djangoproject.com/en/5.2/topics/i18n/
 

@@ -26,10 +26,21 @@ class CurrentUserView(generics.RetrieveAPIView):
 class LogoutView(APIView):
     permission_classes = (permissions.IsAuthenticated,)
     def post(self, request):
+        refresh_token = request.data.get("refresh")
+        if not refresh_token:
+            return Response(
+                {"detail": "Refresh token is required."}, 
+                status=status.HTTP_400_BAD_REQUEST
+            )
         try:
-            refresh_token = request.data["refresh"]
             token = RefreshToken(refresh_token)
             token.blacklist()
-            return Response(status=status.HTTP_205_RESET_CONTENT)
+            return Response(
+                {"detail": "Successfully logged out."}, 
+                status=status.HTTP_205_RESET_CONTENT
+            )
         except Exception as e:
-            return Response({"detail": "Invalid token."}, status=status.HTTP_400_BAD_REQUEST)
+            return Response(
+                {"detail": "Invalid or expired token."}, 
+                status=status.HTTP_400_BAD_REQUEST
+        )
